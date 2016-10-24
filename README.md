@@ -9,59 +9,42 @@ TODO: Write usage instructions
 ## Contributing
 
 Don Juan -->
-
-````````````````````````````````````````````````````````````````````````````````````oy-`````````````
-````````````````````````````````````````````..``````````````````````````````````````.:``````````````
-`````````````````````````````````````````````.-.````..--::/:-..`````````````````````.+``````````````
-`````````````````````````````````.....````...-::--:/ossyyys+:-.````````````````````-os+.````````````
-`````````````````````````````````..-:///:----/oooshdmmmmmddhso/:.`````````````````/sssss.```````````
-`````````````````````````````````.-:/osso////oyhmmNNNNNNNNmdhso+/-.```````````````+hyhyy.```````````
-````````````````````````````````.-/oyhdhyo/+sydmNNNNMMMNNNNNmdyso+/-``````````````+hhhhy.```````````
-``````````````````````````````./shmmmmdhyoooydmNNNNNNNNMMMMNNNmdysso+-````````````+hhhhh-```````````
-`````````````````````````````.ymNNNNNNmmmmmmmdhhhhhhddmNNNNNNNmmdhyyso:```````````ohyhhy-```````````
-````````````````````````````.yNNNMNNNNNNNmmdyysosoo++syyhdmmNNNmmddhysso-`````````ohyhyy:```````````
-````````````````````````````+mNNMMMMNNNmddhyyysyso+/::+ooosyhdddddmmmmyss-````````ohyyyy:```````````
-```````````````````````````.ymNNMMMNNmmddhyyyyyyyso+//++++osyyyhhdddmmmhhy:```````ohyyyy:```````````
-```````````````````````````.hNNNMMNNmddddhhhhhhyysoo++o+++ossssssyhydmmdmmy-``````ohyyyy/```````````
-```````````````````````````/mNNNMNmdddddddhyyysssso+//+/-..:+ooo++syymNmmNdy:`````ohyyyy/```````````
-```````````````````````````hmNNNNmdhddddhhysssssssso+////:-::///+//+symmmNmdh.````ohyyyy+```````````
-``````````````````````````:NNNNNmdyhhddhhhhhhyyyyyyyyyssso+/:----:::/+hddmmdy-````ohyyyy+```````````
-``````````````````````````sNNNNNdyyyhdddddddhhhyyhhyyhhhhyyso+/:----:/sdmdmmh:````oyyyyy+```````````
-``````````````````````````sNMNNmhyhmmNNNNNNmmmddhhhhhhdmmmmmmddhyso/-/odNmmmh+````oyyyyyo```````````
-``````````````````````````/NNNNmhhdmmmdddmmmmmddhhhhhdddmmmmddddddhs/-odNNmmd+````oyyyyyo```````````
-``````````````````````````-mNNNmdddmmmmNNNNNNmmmdddddmmNNNNNNNNNNmmmhdoymNNmd/````oyyyyys.``````````
-``````````````````````````-dmyhMNmmmNNNNMMMMMMNNmmmddmNNMMMMMMNNNNNmshy++hNmd:````syyyyys.``````````
-``````````````````````````.yyymmNNNNNNNNNNNNMMNNmdhyhdNNMMMNNNNNNNmdyo/ohsddh.````syyyyys.``````````
-```````````````````````````:hNmhmmNNNNNNNNNNNNNmmhs+/ydmNNNNNNNNmdyss++oymNy+`````syyyyyy.``````````
-```````````````````````````-ymhsydmmmmNNNNNNmmddhs+-`+yyhddddmdy/:::+o+//hhoo.````syyyyyy-``````````
-```````````````````````````:hyyosyhhdddmmmmmddhhyyss+/ososyhhho:.-:+o+:::syyy.````syyyyyy-``````````
-```````````````````````````-hysoosyyhhdddddddhysyysssyyssysso+++//os+:::/syy+`````syyyyyy-``````````
-````````````````````````````+hhsossyyhhhhhhhhdhhmmyshmdhyyhyyssssss+/////shhs`````syyyyyy:``````````
-`````````````````..`````````-ddsoossyyyyyhhhddddddhhhdhhysyhhyyyyys++////+ys/`````syyyyyy:``````````
-.............---.::.---....`-hdhooosssyyyhhddddddddddhhyso+ydhyyyssoo+///:---````.syyyyyy:``````````
-://////////////////////:///::yyhsoosssyyhhhhhhhhdddhhhyso+oyhhhyyssoo+//+o/-`````.syyyyyy/``````````
-:////////////////////////////syyysssssyyhhyyyhdddhhhhhhhddhhhyhyyssoo+//++/-`````.syyyyyy/```````-/+
-/++///++so+/////oso/////+os+//++++ssssyyyyhhmmmddhhhyyhhdmmdhhyyyssooo+-`````````.yyyyyyy+.``````/o+
-/+//++osyyo+++++sys++++++syo+++/:/osssssyyhhhhdddddddhysosyhhhyysssooo/``````````.syyyyyys+//+//+sss
--:-:+ossssooo+oooooooo+ooooooosoooosssssyyhhhyyyyyyyyyyssyyyyyyysssooo/```..`````.syyyyyyyo+ooooooos
-ooosssoooooo++ooo+ooooooooooosoooooossssyyhyyyyyyyyyyyyyyyyyyyyyssssso/::::::::::/yyyyyyyhsyyyyyyyyy
-sssyyysysyssoossyhhsooosshyyssssoososssssyyhhhhhhhhdhhhhhhyyyyyyssssss///////:///oyyyyyyyhssyyysyyyy
-:/:sssssosooooooosooo+ooosoooooooo++osssyyyyhhhhdddddddhhhyyyyysssssss:+oooo++ooosyyyyyyyysooossssso
-:::ossosyyooooo+oysoooooossooosooo+oyssyyyyyyhhhhhhhhhhhhyyyyssssssyso:+yyss++osssyyyyyyyyssosdmmmho
-//:ossoydhooooo+shyoooooosysoosooo+oyyyyyyyyyyyyhhyyyyyyyyyyyyysssyys+:/syosooooosyyyyyyyyssosdmmmdo
-:::sssosyhooooo+shsooooooosoosssoo+oyyyyyyyyyyyyyyyyyyyyyyyyysssyyyso+/:oyysooooosyyyyyyyyysosdmmmdo
--::sssoooooooooooooosoooooooosssoo+oyyyyyyyyyyyyyyyyyyyyyssssyyyyyyso+/:+yysooossddhhddhhdysosdmmmho
-.::ssssooooooosooooosoosooooosssoo+oyyyyyyyyyyyyyyysssyssssyyyyyyyysso+/:osssoooyddmmNNNddysosdmmmdo
-://sssssyyssoosoyhhosoosoyysosssysooyyyyyyyyyyyyyyssssssssssyyyyyyysso+//--/+oosydhhddmmdddyssddddhs
--:/sssssyssssosssssssoosssssssssysssyyyyyyyyyysyyysyssssyssssyyyyyyssoo+//-.`.-::++oo/sddddyssyyyyys
---/yssssysssssssssssssssoo++ohhyyyyyyyyyyyyyysssssssssssssssyyyyyyyssso+///:-.````.+s``:+oyyssyyyyys
-://yyyshddhysssshddys+/////+hdhhhhhyyyyyyyyyysssssssssssssssyyyyyyyysoo+//+//:..```..``   `.-+hmmNms
--:/syyyyhhyyssssss+:-/++oooosddhhhhhyyyyyyyyyyssssssssssssssyyyyyyyyysoo+//////:-....```      `-/sys
-://+syyyyssyo/:--://+o+ooossshdhhhhhhyyyyyyyyyssssssssssssssyyyyyyyyysso+///////:-..````           `
-ysosyyhyy+:.``-+oooossoossssssyhhhhhhyyyyyyyyyyysssssssssssyyyyyyyyyyyso+////::-.`````````          
-o+ooo/-.` `./ooooooossoossssysssyhhhhhhhyyyyyyyysssssssssyyyyyyyyyyyyyso+/:::.````.-..```           
-+-`    .-/+oooooooooooooosyyssssyysyhhhhhhhyyyyyyyssyyyyyyyyyyyyyyyyso+:-..````.-:-.```            `
-   `.:+ooooooooooooooosssssssyyyssysyyyyhhhhhhhhhhhhdhddhhhhhhhhs+/-..```..-::-.`        ` `````````
+``````````````````````````````````````````````````````````.o-`````````
+```````````````````````````````..`````..--..```````````````:``````````
+```````````````````````..--..`..::-/oyyyyo/-.`````````````:o+.````````
+```````````````````````.-/+o/::/sydmNNNNmhyo/-```````````-yyyo````````
+``````````````````````.:+yhhy++ydmNNNMMNNNmhs+/-`````````:hhho````````
+`````````````````````+hmNNmdhyyddmmmmNNMMMNNdyss/````````:hhhs````````
+````````````````````oNNNNNNNNmdyssso+syddmNNmdhyso:``````:hyys````````
+```````````````````-mNMMMNNmdhyysys+/:+ooshhdddmmhy/`````:hyys````````
+```````````````````/NNMMNmdddhhhhyyo++++ossssyhhmmdd/````:hyys````````
+```````````````````yNNMNdddddhyyssso///-`-+oo+oydNmNd+```:hyyy````````
+``````````````````-NNNNdhhddhhyyyyyyssoo+/:::::/oddmmh.``:hyyy````````
+``````````````````oNNNmyyddmdddhhhhhyhhhhyo+::--:smdmh.``/yyyy.```````
+``````````````````+NNNdhmmmmmmmmddhhhddmmmmmddy+:smNmd:``/yyyy.```````
+``````````````````-NNNmdmmmmNNNNmmddmmNNNNNNNmmhhohNmd-``/yyyy-```````
+``````````````````-dsdNmmNNNMMMMNmmdhmNMMMMNNNNdsooymd.``/yyyy:```````
+```````````````````ommdNNNNNNNNNNmds/ymNNNNNNmyso+smdo```/yyyy:```````
+```````````````````+dyshdmmmmmmmdhyo-+yyhdddo--/o/:yss```/yyyy/```````
+```````````````````+hsoyyhddddddhyyssssssss+//+o/:/syo```/yyyy/```````
+````````````.``````.yhosyyhhhhhhhdmyymhyyhyysss+///shs```+yyyy/```````
+````````....:....```ydsossyyyhddddddddhyoyhhyyso+//:/:```+yyyy+```````
+://////////////////:syysossyhhhhhdddhhyooyhhyysoo/+o:````+yyyy+``````.
+/+//++++//++++///++/+ososssyyhhdmdhhyyhdmdhyyysoo/--.````+yyyy+`````/o
++//+oyy++++sy++++oy+++//ssssyhhhdddddhysyhhyyssoo:```````+yyyys//+/+ss
+//+osoooo+oooooooooossooosssyhyyyyyyyyssyyyyyssoo:---....oyyyyyossssss
+ssyyssysoosyhsoosyysssooossssyhhhhhhhhhhhyyyyssss/////:/+syyyyysyyyyyy
+::osoooooooooooooooooooo+sssyyyhhdddddhhhyyysssss:sso+ossyyyyyysosyyyo
+/:ssohhooooshoooooyoosoo+yyyyyyyhhhhhyyyyyyyssyy+:sysooosyyyyyysosmmmo
+::ssosyoooosyooooosoosoo+yyyyyyyyyyyyyyyyyysyyys+//yyoooshyyyyhyoymmms
+-:sssooooooooooooooossso+yyyyyyyyyyyyyysssyyyyyso/:sssooyddmmmdyssmmms
+:/sssyyssoosyssossyossssosyyyyyyyyysssssssyyyyyso+/::/ooyyydmmdhsyddds
+-:sssssssssssssssssosyssyyyyyyyyssssssssssyyyyysso+/:.``.:o::shhysyyys
+:/yyshdysssydyo+///odhhhhyyyyyyyssssssssssyyyyysso+///-.``.``  .-+dmNy
+::oyyyyyyo+//:/+oosshdhhhyyyyyyyssssssssssyyyyyyso+/////:-..``     .:/
+sosyhyo:.`:+o+soosssshhhhhyyyyyyyssssssssyyyyyyyyso///::.``````       
+o//-.``-/ooooosoosysssyyhhhhhyyyyyssssssyyyyyyyyyo+:-.```--.``        
+`  .:+ooooooooossssssysssyyyhhhhhyyhhhhhhhhhys+/-.``.--..`       `````
 
 1. Fork it!
 2. Create your feature branch: `git checkout -b my-new-feature`
