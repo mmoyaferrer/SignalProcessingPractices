@@ -30,8 +30,9 @@ stem(xCuantizada)
     soundsc(xCuantizada);
 
 
-errorCuantizacion=x-xCuantizada; %Error de cuantizacion
-SNR=10*log10((x'*x)/(errorCuantizacion'*errorCuantizacion));
+errorCuantizacionEnTransmisor=x-xCuantizada; %% Error de cuantizacion, el único distinto a 0 en un sistema ideal.
+
+SNRenTransmisor=10*log10((x'*x)/(errorCuantizacionEnTransmisor'*errorCuantizacionEnTransmisor));
 if(guardar==1)
     cd D:\MASTER\SAC
     wavwrite(xCuantizada,'x_unifor'); % guardo señal cuantizada en wav
@@ -41,10 +42,10 @@ end
 
 nivelesCuantizacion=sort(unique(xCuantizada,'stable')); % niveles de cuantización | unique saca los diferentes niveles de la señal cuantizada
 numeroTotalNivelesCuantizacion=(2^BitsCuatizacion)-1;
-palabraCodigoDecimal=zeros(1,length(xCuantizada));
+palabraCodigoTXDecimal=zeros(1,length(xCuantizada));
 
 for i=1:1:length(nivelesCuantizacion)-1
-    palabraCodigoDecimal(find(xCuantizada(:,1)==nivelesCuantizacion(i,1)))=numeroTotalNivelesCuantizacion;
+    palabraCodigoTXDecimal(find(xCuantizada(:,1)==nivelesCuantizacion(i,1)))=numeroTotalNivelesCuantizacion;
     numeroTotalNivelesCuantizacion=numeroTotalNivelesCuantizacion-1;
 end
 
@@ -52,19 +53,19 @@ end
 
 % Lo paso a binario
 
-palabraCodigoBinario=dec2bin(palabraCodigoDecimal);
+palabraCodigoTXBinario=dec2bin(palabraCodigoTXDecimal);
  
 
 %% Aplico un código de línea
 
-datosCodificados=[];
+datosCodificadosTX=[];
 
-for fila=1:1:length(palabraCodigoBinario)
-    datosCodificados = strcat(datosCodificados,bin2manchester(palabraCodigoBinario(fila,:)));
+for fila=1:1:length(palabraCodigoTXBinario)
+    datosCodificadosTX = strcat(datosCodificadosTX,bin2manchester(palabraCodigoTXBinario(fila,:)));
 end
 
-datosCodificados=str2num(datosCodificados')';
-senalAnalogicaTX=reshape(bsxfun(@minus, 2*datosCodificados, ones(4,1)), 1, []); %Sustituye 1 con 1 1 1 1 y cero con -1 -1 -1 -1
+datosCodificadosTX=str2num(datosCodificadosTX')';
+senalAnalogicaTX=reshape(bsxfun(@minus, 2*datosCodificadosTX, ones(4,1)), 1, []); %Sustituye 1 con 1 1 1 1 y cero con -1 -1 -1 -1
 
 %% CANAL
 %%%%%%%%%%%%%%%%%%%%%%%
@@ -96,31 +97,29 @@ datosRecibidosDecodificados=[];
  end
 
 %% Obtenemos el error de transmisión
-errorTransmision=sum(palabraCodigoBinario-datosRecibidosDecodificados);
+errorTransmision=sum(palabraCodigoTXBinario-datosRecibidosDecodificados);
 
 %% Decuantizamos la señal de la variables datosRecibidosDecodificados
 
-palabraCodigoRX=bin2dec(datosRecibidosDecodificados)';
+palabraCodigoRXDecimal=bin2dec(datosRecibidosDecodificados)';
 
-errorEntrePalabraCodigoTXyRX=sum(palabraCodigoRX-palabraCodigoDecimal);
+errorEntrePalabraCodigoTXyRX=sum(palabraCodigoRXDecimal-palabraCodigoTXDecimal);
 
 numeroTotalNivelesCuantizacion=(2^BitsCuatizacion)-1;
 
-xCuantizadaRX=zeros(1,length(palabraCodigoRX));
-for i=1:1:length(nivelesCuantizacion)-1
-    xCuantizadaRX(find(palabraCodigoRX(1,:)==numeroTotalNivelesCuantizacion))=nivelesCuantizacion(i);
+xCuantizadaRX=zeros(1,length(palabraCodigoRXDecimal));
+for i=1:1:length(nivelesCuantizacion)
+    xCuantizadaRX(find(palabraCodigoRXDecimal(1,:)==numeroTotalNivelesCuantizacion))=nivelesCuantizacion(i);
     numeroTotalNivelesCuantizacion=numeroTotalNivelesCuantizacion-1;
 end
 
 xCuantizadaRX=xCuantizadaRX';
 
-% obtengo la SNR
+%% Obtenemos SNR entre señal cuantizada emitida y señal cuantizada recibida, es inf. ya que el error entre ambas es 0.
+errorEntreXcuantizadaRXyTX=sum(xCuantizadaRX-xCuantizada);
+SNRentreSenalesCuantizadas=10*log10((xCuantizadaRX'*xCuantizadaRX)/(errorEntreXcuantizadaRXyTX'*errorEntreXcuantizadaRXyTX));
 
-errorEntreXcuantizadaRXyTX=xCuantizadaRX-xCuantizada;
-
-SNRfinal=10*log10((xCuantizadaRX'*xCuantizadaRX)/(errorEntreXcuantizadaRXyTX'*errorEntreXcuantizadaRXyTX));
-
-% lo escuchamos
+%% Escuchamos la señal cuantizada recibida
 
 soundsc(xCuantizadaRX');
 
