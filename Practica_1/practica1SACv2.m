@@ -75,7 +75,7 @@ preambulo = [1 1 1 1 0 0 0 0 1 1 1 1 0 0 0 0];
 postambulo = [0 0 0 0 1 1 1 1 0 0 0 0 1 1 1 1];
 
 datosCodificadosTX = str2num(datosCodificadosTX')';
-datosCodificadosTX = [ preambulo datosCodificadosTX postambulo] ;
+datosCodificadosTX = [ preambulo datosCodificadosTX postambulo ] ;
 
 senalAnalogicaTX = reshape(bsxfun(@minus, 2*datosCodificadosTX, ones(4,1)), 1, []); %Sustituye 1 con 1 1 1 1 y cero con -1 -1 -1 -1
 
@@ -145,7 +145,7 @@ for i=1:length(senalDigitalRX)-length(preambulo)
     end
 end
 
-senalDigitalRX = senalDigitalRX(1:end-length(postambulo));
+senalDigitalRX = senalDigitalRX(1:indice_post);
 
 
 %% Quitamos la codificacion manchester a los datos recibidos 
