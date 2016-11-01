@@ -7,7 +7,7 @@ clear all
 
 load x.txt
 plot (x)
-BitsCuatizacion=3; %Â¨2^B -1 niveles cuantizacion
+BitsCuatizacion=2; %Â¨2^B -1 niveles cuantizacion
 Vd = 2;  % Valor de amplitud de la seÃ±al a transmitir
 guardar=0;
 
@@ -64,10 +64,40 @@ for fila=1:1:length(palabraCodigoTXBinario)
     datosCodificadosTX = strcat(datosCodificadosTX,bin2manchester(palabraCodigoTXBinario(fila,:)));
 end
 
-datosCodificadosTX=str2num(datosCodificadosTX')';
-senalAnalogicaTX=reshape(bsxfun(@minus, 2*datosCodificadosTX, ones(4,1)), 1, []); %Sustituye 1 con 1 1 1 1 y cero con -1 -1 -1 -1
+% % % % se muestrea la señal codificada digital para enviarla por el canal.
+
+%%%%% hay que añador el preámbulo para saber cuando llega la señal
+%%%%% codificada. El preámbulo debe ser una señal no permitida por el
+%%%%% codigo mánchester.
+
+
+preambulo = [1 1 1 1 0 0 0 0 1 1 1 1 0 0 0 0];
+
+datosCodificadosTX = str2num(datosCodificadosTX')';
+datosCodificadosTX = [ preambulo datosCodificadosTX ] ;
+
+senalAnalogicaTX = reshape(bsxfun(@minus, 2*datosCodificadosTX, ones(4,1)), 1, []); %Sustituye 1 con 1 1 1 1 y cero con -1 -1 -1 -1
+
+
+
+ 
 
 %% CANAL
+%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
@@ -80,10 +110,27 @@ senalAnalogicaTX=reshape(bsxfun(@minus, 2*datosCodificadosTX, ones(4,1)), 1, [])
 
 senalAnalogicaRX = senalAnalogicaTX;
 
+
+% Restauramos la señal recibida para volver a -1s y 1s.
+
+senalAnalogicaRX(find(senalAnalogicaRX < 0)) == -1 ;
+senalAnalogicaRX(find(senalAnalogicaRX >= 0)) == 1 ;
+
+
 senalDigitalRX = reshape(senalAnalogicaRX,4,[]); % Transformamos a una matrix 4 x n
 senalDigitalRX = (senalDigitalRX(1,:) + 1)./2; % Nos quedamos con la primera fila, sumamos 1 a todos los elementos y dividimos por 2 para 
                                         % pasar de -1s y 1s a 0s y 1s.
 
+
+%%% buscamos el preambulo y lo eliminamos
+
+for i=1:length(senalDigitalRX)-length(preambulo)-1
+    if(preambulo == senalDigitalRX(length(senalDigitalRX)-i-length(preambulo):length(senalDigitalRX)-i-1))
+        indice = length(senalDigitalRX)-i-1;
+    end
+end
+
+senalDigitalRX = senalDigitalRX(indice+1:end);
 
 %% Quitamos la codificacion manchester a los datos recibidos 
  
