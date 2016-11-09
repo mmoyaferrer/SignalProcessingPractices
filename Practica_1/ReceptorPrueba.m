@@ -20,7 +20,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%
 
-
+BitsCuatizacion=8; %Â¨2^B -1 niveles cuantizacion
 
 preambulo = [1 1 0 1 0 0 0 0 1 0 1 1 0 0 0 0 1 0 1 1 1 1 0 1 0 0 0 0 1 0 1 1 0 0 0 0 1 0 1 1];
 postambulo = [0 0 1 0 1 1 0 1 0 0 1 0 1 1 0 1 0 0 0 0 1 1 0 1 0 0 1 0 1 1 0 1 0 0 1 0 1 1 0 0];
@@ -29,10 +29,10 @@ postambulo = [0 0 1 0 1 1 0 1 0 0 1 0 1 1 0 1 0 0 0 0 1 1 0 1 0 0 1 0 1 1 0 1 0 
 %% Algoritmo de detección
 
 senalDetectadaCanal = audiorecorder(48000, 8, 1);     % audiorecorder(Fs, NBITS, NCHANS)
-recordblocking(senalDetectadaCanal,20); % speak into microphone...
+recordblocking(senalDetectadaCanal,40); % speak into microphone...
 %pause(senalDetectadaCanal);
-play(senalDetectadaCanal)
-y = getaudiodata(senalDetectadaCanal)
+%play(senalDetectadaCanal)
+y = getaudiodata(senalDetectadaCanal);
 
 
 
