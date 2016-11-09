@@ -75,7 +75,7 @@ preambulo = [1 1 1 1 0 0 0 0 1 1 1 1 0 0 0 0];
 postambulo = [0 0 0 0 1 1 1 1 0 0 0 0 1 1 1 1];
 
 datosCodificadosTX = str2num(datosCodificadosTX')';
-datosCodificadosTX = [ preambulo datosCodificadosTX postambulo ] ;
+datosCodificadosTX = [1 0 1 0  preambulo datosCodificadosTX postambulo 1 0 1 0 0 0 ] ;
 
 senalAnalogicaTX = reshape(bsxfun(@minus, 2*datosCodificadosTX, ones(4,1)), 1, []); %Sustituye 1 con 1 1 1 1 y cero con -1 -1 -1 -1
 

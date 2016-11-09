@@ -7,7 +7,7 @@ clear all
 
 load x.txt
 plot (x)
-BitsCuatizacion=2; %Â¨2^B -1 niveles cuantizacion
+BitsCuatizacion=8; %Â¨2^B -1 niveles cuantizacion
 Vd = 2;  % Valor de amplitud de la seÃ±al a transmitir
 guardar=0;
 
@@ -71,8 +71,8 @@ end
 %%%%% codigo mánchester.
 
 
-preambulo = [1 1 1 1 0 0 0 0 1 1 1 1 0 0 0 0];
-postambulo = [0 0 0 0 1 1 1 1 0 0 0 0 1 1 1 1];
+preambulo = [1 1 0 1 0 0 0 0 1 0 1 1 0 0 0 0 1 0 1 1 1 1 0 1 0 0 0 0 1 0 1 1 0 0 0 0 1 0 1 1];
+postambulo = [0 0 1 0 1 1 0 1 0 0 1 0 1 1 0 1 0 0 0 0 1 1 0 1 0 0 1 0 1 1 0 1 0 0 1 0 1 1 0 0];
 
 datosCodificadosTX = str2num(datosCodificadosTX')';
 datosCodificadosTX = [ preambulo datosCodificadosTX postambulo ] ;
@@ -82,6 +82,9 @@ senalAnalogicaTX = reshape(bsxfun(@minus, 2*datosCodificadosTX, ones(4,1)), 1, [
 
 %% Transmsión por line out micrófono 
 
-%soundsc(senalAnalogicaTX);
+disp('3 segundos para transmision');
+pause(3);
+
+sound(senalAnalogicaTX,48000);
 
 
