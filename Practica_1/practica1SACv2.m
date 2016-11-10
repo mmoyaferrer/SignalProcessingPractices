@@ -7,7 +7,7 @@ clear all
 
 load x.txt
 plot (x)
-BitsCuatizacion=2; %¨2^B -1 niveles cuantizacion
+BitsCuatizacion=8; %¨2^B -1 niveles cuantizacion
 Vd = 2;  % Valor de amplitud de la señal a transmitir
 guardar=0;
 
@@ -71,16 +71,18 @@ end
 %%%%% codigo m�nchester.
 
 
-preambulo = [1 1 1 1 0 0 0 0 1 1 1 1 0 0 0 0];
-postambulo = [0 0 0 0 1 1 1 1 0 0 0 0 1 1 1 1];
+preambulo = [1 1 0 1 0 0 0 0 1 0 1 1 0 0 0 0 1 0 1 1 1 1 0 1 0 0 0 0 1 0 1 1 0 0 0 0 1 0 1 1];
+postambulo = [0 0 1 0 1 1 0 1 0 0 1 0 1 1 0 1 0 0 0 0 1 1 0 1 0 0 1 0 1 1 0 1 0 0 1 0 1 1 0 0];
 
 datosCodificadosTX = str2num(datosCodificadosTX')';
-datosCodificadosTX = [1 0 1 0  preambulo datosCodificadosTX postambulo 1 0 1 0 0 0 ] ;
+datosCodificadosTX = [  preambulo datosCodificadosTX postambulo ] ;
 
 senalAnalogicaTX = reshape(bsxfun(@minus, 2*datosCodificadosTX, ones(4,1)), 1, []); %Sustituye 1 con 1 1 1 1 y cero con -1 -1 -1 -1
 
 
+senalAnalogicaTX = [zeros(1,randi(1000,1)*4) senalAnalogicaTX zeros(1,randi(1000,1)*4)];
 
+senalAnalogicaTX = senalAnalogicaTX + rand(1,length(senalAnalogicaTX))-0.5;
  
 
 %% CANAL
@@ -107,8 +109,8 @@ senalAnalogicaTX = reshape(bsxfun(@minus, 2*datosCodificadosTX, ones(4,1)), 1, [
 
 
 
-preambulo = [1 1 1 1 0 0 0 0 1 1 1 1 0 0 0 0];
-postambulo = [0 0 0 0 1 1 1 1 0 0 0 0 1 1 1 1];
+preambulo = [1 1 0 1 0 0 0 0 1 0 1 1 0 0 0 0 1 0 1 1 1 1 0 1 0 0 0 0 1 0 1 1 0 0 0 0 1 0 1 1];
+postambulo = [0 0 1 0 1 1 0 1 0 0 1 0 1 1 0 1 0 0 0 0 1 1 0 1 0 0 1 0 1 1 0 1 0 0 1 0 1 1 0 0];
 
 %% Pasamos la señal recibida a binario
 
@@ -118,8 +120,8 @@ senalAnalogicaRX = senalAnalogicaTX;
 
 % Restauramos la se�al recibida para volver a -1s y 1s.
 
-senalAnalogicaRX(find(senalAnalogicaRX < 0)) == -1 ;
-senalAnalogicaRX(find(senalAnalogicaRX >= 0)) == 1 ;
+senalAnalogicaRX(find(senalAnalogicaRX < 0)) = -1 ;
+senalAnalogicaRX(find(senalAnalogicaRX >= 0)) = 1 ;
 
 
 senalDigitalRX = reshape(senalAnalogicaRX,4,[]); % Transformamos a una matrix 4 x n
