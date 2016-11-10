@@ -36,11 +36,12 @@ postambulo = [0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1];
 % durante 40 segundos, y finalmente pasamos la se?al recibida a un valor
 % fisico mediante la funcion getaudiodata.
 
-senalDetectadaCanal = audiorecorder(48000, 8, 1);    
+senalDetectadaCanal = audiorecorder(48000,16, 1);    
 recordblocking(senalDetectadaCanal,40); 
 y = getaudiodata(senalDetectadaCanal);
 
-
+figure
+plot(y)
 
 %% Conversion de la se?al recibida a 0s y 1s
 
