@@ -11,7 +11,7 @@
 % encargado de recibir y procesar la se?al recibida, de manera que se
 % obtenga el archivo de audio enviado en el emisor.
 
-% Para ello, se implementan las caracteristicas basicas de un emisor:
+% Para ello, se implementan las caracteristicas basicas de un receptor:
 % 
 % - 1? Recepcion de la se?al
 % - 2? Conversion de la se?al recibida a 0s y 1s

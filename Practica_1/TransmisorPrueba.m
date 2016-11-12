@@ -15,8 +15,8 @@
 % - 1? Cuantizacion de la se?al.
 % - 2? Codificacion de la se?al usando un codigo de linea Manchester.
 % - 3? Muestreo de la se?al codificada para conseguir una segunda
-% se?al adaptada a una transmision paso baja con una frecuencia superior 
-% de corte de 12kHz.
+%      se?al adaptada a una transmision paso baja con una frecuencia superior 
+%      de corte de 12kHz.
 % - 4? Preambulo y postambulo. (SINCRONIZACIÓN)
 % - 5? Envio de la se?al.
 
@@ -33,7 +33,7 @@ plot (x);
 title 'Se?al a transmitir';
 
 BitsCuatizacion=8; % 2^B -1 niveles cuantizacion
-Vd = 2;  % Valor de amplitud de la se?al a transmitir
+Vd = 2;            % Valor de amplitud de la se?al a transmitir
 guardar=0;
 
 
@@ -70,6 +70,7 @@ numeroTotalNivelesCuantizacion=(2^BitsCuatizacion)-1;
 % se?al de audio. En el for, buscamos en la se?al cuantizada los valores de
 % esta que se corresponden con el nivel de cuantizacion mas alto, asignandoles el nivel
 % correspondiente en decimal, y asi sucesivamente hasta llegar al nivel 0.
+
 palabraCodigoTXDecimal=zeros(1,length(xCuantizada));
 for i=1:1:length(nivelesCuantizacion)-1
     palabraCodigoTXDecimal(find(xCuantizada(:,1)==nivelesCuantizacion(i,1)))=numeroTotalNivelesCuantizacion;
