@@ -25,7 +25,7 @@
 %% Inicializaci?n variables
 
 clear all
-yo
+
 load x.txt % Cargamos la se?al de audio a transmitir.
 plot (x);
 title 'Se?al a transmitir';
