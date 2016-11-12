@@ -17,7 +17,7 @@
 % - 3? Muestreo de la se?al codificada para conseguir una segunda
 % se?al adaptada a una transmision paso baja con una frecuencia superior 
 % de corte de 12kHz.
-% - 4? Preambulo y postambulo.
+% - 4? Preambulo y postambulo. (SINCRONIZACIÓN)
 % - 5? Envio de la se?al.
 
 
@@ -27,14 +27,18 @@
 clear all
 
 load x.txt % Cargamos la se?al de audio a transmitir.
+
+figure
 plot (x);
 title 'Se?al a transmitir';
+
 BitsCuatizacion=8; % 2^B -1 niveles cuantizacion
 Vd = 2;  % Valor de amplitud de la se?al a transmitir
 guardar=0;
 
 
 %% Cuantizacion de la se?al
+
 %  En este primer apartado procedemos a cuantizar la se?al de audio
 %  procedente del fichero x.txt.
 
@@ -57,9 +61,11 @@ SNRenTransmisor=10*log10((x'*x)/(errorCuantizacionEnTransmisor'*errorCuantizacio
 % En primer lugar obtenemos los diferentes niveles de la se?al cuantizada
 % mediante la funcion unique, ordenandolos posteriormente con sort.
 nivelesCuantizacion=sort(unique(xCuantizada,'stable')); 
+
 % Obtenemos el numero total de niveles de cuantizacion a partir de los bits
 % utilizados
 numeroTotalNivelesCuantizacion=(2^BitsCuatizacion)-1;
+
 % Creamos una nueva matriz de 1 fila y tantas columnas como muestras en la
 % se?al de audio. En el for, buscamos en la se?al cuantizada los valores de
 % esta que se corresponden con el nivel de cuantizacion mas alto, asignandoles el nivel
@@ -77,10 +83,14 @@ palabraCodigoTXBinario=dec2bin(palabraCodigoTXDecimal);
 
 
 %% Aplicacion del codigo de linea a la se?al cuantizada.
+
 %  Una vez que tenemos la se?al cuantizada y en binario, le aplicamos un
 %  codigo de linea Manchester, de manera que no tenemos componente en
 %  continua, y a su vez empleamos un algoritmo optimo para una transmision
 %  en un canal paso baja.
+
+% Añadir que el código Manchester nos proporciona ya un mecanismo de
+% detección de errores, al detectar códigos no válidos.
 
 % Creamos una nueva matriz, en la cual, mediante un for, almacenamos los
 % datos de la se?al cuantizada codificados mediante la funcion
@@ -92,6 +102,7 @@ end
 
 
 %% Preambulo y post-ambulo 
+
 %  Una vez que tenemos la se?al codificada, hemos de a?adirle una seccion
 %  de codigo caracteristica que defina donde comienza nuestra se?al y donde
 %  acaba, puesto que en el receptor recibira otros datos/ruido antes y
@@ -114,7 +125,8 @@ datosCodificadosTX = [ preambulo datosCodificadosTX postambulo ] ;
 %  sin componente en continua (conjuntamente con el codigo Manchester)
 senalAnalogicaTX = reshape(bsxfun(@minus, 2*datosCodificadosTX, ones(4,1)), 1, []); 
 
-
+% Nota: Para la transmisión por la tarjeta de sonido se reduce el volumen a
+% un 80% para no saturar la señal.
 %% Transmision de la se?al por la tarjeta de sonido
 
 disp('Presiona tecla espacio para iniciar la transmision');

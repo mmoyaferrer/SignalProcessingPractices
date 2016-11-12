@@ -20,6 +20,17 @@
 % - 5? Decuantizacion de la se?al
 % - 6? Test de la se?al recibida
 
+
+%% Problemas encontrados
+
+% Tuvimos muchos problemas en recepción debido a un cable jack to jack que 
+% nos estaba metiendo un ruido tremendo en la señal recibida,
+% distorsionándola y haciendo imposible la decodificación Manchester, y por
+% consiguiente la correcta recepción de los datos.
+
+% Es por esto que se ha incluido una vesión de la práctica probada en
+% local, sin transmisión física por un cable.
+
 %% Definicion de variables
 
 BitsCuatizacion=8; %2^B -1 niveles cuantizacion
@@ -37,7 +48,7 @@ postambulo = [0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1];
 % fisico mediante la funcion getaudiodata.
 
 senalDetectadaCanal = audiorecorder(48000,16, 1);    
-recordblocking(senalDetectadaCanal,40); 
+recordblocking(senalDetectadaCanal,40);   % Bloquea la ejecución del script hasta finalizar de grabar
 y = getaudiodata(senalDetectadaCanal);
 
 figure
@@ -54,8 +65,8 @@ senalAnalogicaRX(find(senalAnalogicaRX >= 0)) = 1 ;
 
 
 senalDigitalRX = reshape(senalAnalogicaRX,4,[]); % Transformamos a una matrix 4 x n
-senalDigitalRX = (senalDigitalRX(1,:) + 1)./2; % Nos quedamos con la primera fila, sumamos 1 a todos los elementos y dividimos por 2 para 
-                                        % pasar de -1s y 1s a 0s y 1s.
+senalDigitalRX = (senalDigitalRX(1,:) + 1)./2;   % Nos quedamos con la primera fila, sumamos 1 a todos los elementos y dividimos por 2 para 
+                                                 % pasar de -1s y 1s a 0s y 1s.
 
 
 %% Deteccion de preambulo y postambulo                                        
@@ -75,13 +86,17 @@ for i=1:length(senalDigitalRX)-length(preambulo)
     end
 end
 
+% Una vez localizados los datos, los almacenamos en una matriz.
 senalDigitalRX = senalDigitalRX(indice+1:indice_post);
 
 
 %% Decodificaci?n Manchester
- 
-senalDigitalRXTransformada=reshape(senalDigitalRX,2*BitsCuatizacion,[]); %  Hacemos reshape de digital_RX, pasamos ??sta a una matriz de 2*B filas y las columnas correspondientes, de manera que cada columna ser?? una palabra manchester
-senalDigitalRXTransformadaString=num2str(senalDigitalRXTransformada,'%1d')';          %  Pasamos aINT a str para poder decodificarla con la funci??n manchester2bin, ya que es necesario que esta sea char, ponemos como argumento %1d para que no se metan espacios.
+
+%  Hacemos reshape para pasar a una matriz de 2*B filas y las columnas correspondientes, de manera que cada columna será una palabra manchester
+senalDigitalRXTransformada=reshape(senalDigitalRX,2*BitsCuatizacion,[]); 
+
+%  Pasamos senalDigitalRXTransformada a STRING para poder decodificarla con la función 'manchester2bin', ya que es necesario que esta sea char, ponemos como argumento %1d para que no se metan espacios.
+senalDigitalRXTransformadaString=num2str(senalDigitalRXTransformada,'%1d')';       
 
 datosRecibidosDecodificados=[];
 
