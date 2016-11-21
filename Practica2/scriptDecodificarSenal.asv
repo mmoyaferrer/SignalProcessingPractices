@@ -133,17 +133,17 @@ title('L-R Part of Signal Spectrum');
 % Pasamos la señal L-R a banda base multiplicando por la portadora dos
 % veces
 
-x_LminusRBaseBand = carrier.^2 .* x_filtLminusR;
+x_LminusRBaseBand = carrier.^2 * x_filtLminusR;
  
 %  Filter the signal with the FIR filter
 x_filtLminusRBaseBand = filter(B_1, 1, x_LminusRBaseBand);
 
-fftx_LminusRBaseBand = fft(x_filtLminusRBaseBand);
+fftx_LminusRBaseBand = fft(x_filtLminusR);
 figure;
-plot(linspace(0,Fs/2,length(x_filtLminusRBaseBand)/2-1)/1000 , abs(fftx_LminusRBaseBand(1:length(fftx_LminusRBaseBand)/2-1)));
+plot(linspace(0,Fs/2,length(x_filtLminusRBaseBand)/2-1)/1000 , abs(fftx_LminusR(1:length(fftx_LminusR)/2-1)));
 xlabel('Frequency kHz');
 ylabel('L-R X(f)');
-title('L-R Part banda base of Signal Spectrum');
+title('L-R Part of Signal Spectrum');
 
 
 
