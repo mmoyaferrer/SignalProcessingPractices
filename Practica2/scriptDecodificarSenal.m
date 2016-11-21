@@ -87,7 +87,7 @@ xlabel('Frequency kHz');
 ylabel('Deemphasis L+R X(f)');
 title('Deemphasis L + R Part of Signal Spectrum');
 
-soundsc(x_LR,Fs);
+% soundsc(x_LR,Fs);
 
 % Filtro paso banda para obtener Portadora
 
@@ -145,6 +145,18 @@ xlabel('Frequency kHz');
 ylabel('L-R X(f)');
 title('L-R Part banda base of Signal Spectrum');
 
+
+% Aplicamos el filtro de deemfasis a la señal L-R en banda base 
+
+x_LminusRdeem = filter(DeemphasisFilter, x_filtLminusRBaseBand);
+
+% Obtenemos el canal R sumando las señales L+R y L-R
+
+R = x_LR + x_LminusRdeem;
+L = x_LR - x_LminusRdeem;
+x_RX = [ R';L'];
+
+sound (x_RX,Fs);
 
 
 % Filtro paso banda para obtener RBDS
