@@ -163,13 +163,14 @@ sound (x_RX,Fs);
 
 order_bandpass3 = 200;
 f_bandpass3 =[55000 58650]*2/Fs;  
+f_bandpass3 =[54594 59406]*2/Fs;  % en internet --> BW=4812
 
 B_4 = fir1(order_bandpass3,f_bandpass3);
  
 %  Filter the signal with the FIR filter
 x_filtRBDS = filter(B_4, 1, x_demod);
 
-% Espectro de la señal portadora
+% Espectro de la señal RDS
 
 fftx_RBDS = fft(x_filtRBDS);
 
@@ -179,9 +180,16 @@ xlabel('Frequency kHz');
 ylabel('RBDS X(f)');
 title('RBDS Part of Signal Spectrum');
 
+%% Decodificamos RBDS
+
+% Obtengo la señal en fase y cuadratura
 
 
+RBDS_fase=x_filtRBDS'.*cos(2*pi*57000*t);
+RBDS_cuadratura=x_filtRBDS'.*sin(2*pi*57000*t);
 
+
+% filtrar paso baja
 
 
 % soundsc(abs(x),Fs);
