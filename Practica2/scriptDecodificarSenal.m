@@ -7,6 +7,7 @@ load('Pract2.mat');
 x=reshape(x.Data,numel(x.Data),1);
 
 t=1/Fs:1/Fs:(length(x)-1)/Fs;
+Tsim = 1187.5;
 
 xi=real(x);
 xq=imag(x);
@@ -156,7 +157,7 @@ R = x_LR + x_LminusRdeem;
 L = x_LR - x_LminusRdeem;
 x_RX = [ R';L'];
 
-sound (x_RX,Fs);
+% sound (x_RX,Fs);
 
 
 % Filtro paso banda para obtener RBDS
@@ -187,6 +188,18 @@ title('RBDS Part of Signal Spectrum');
 
 RBDS_fase=x_filtRBDS'.*cos(2*pi*57000*t);
 RBDS_cuadratura=x_filtRBDS'.*sin(2*pi*57000*t);
+
+% Obtenemos el filtro conformador convolucionando un pulso coseno
+% remonta<do con dos deltas en -Tsim/4 y Tsim/4
+
+coseno_remontado = rcosine(4000,200000);
+coseno_remontado = resample(coseno_remontado,128,length(coseno_remontado));
+deltas = zeros(1,128);
+deltas(3*length(deltas)/8)=-1;
+deltas(5*length(deltas)/8)=1;
+p = conv(deltas,coseno_remontado);
+plot(p);
+
 
 
 % filtrar paso baja
