@@ -185,9 +185,11 @@ title('RBDS Part of Signal Spectrum');
 
 % Obtengo la señal en fase y cuadratura
 
-
 RBDS_fase=x_filtRBDS'.*cos(2*pi*57000*t);
 RBDS_cuadratura=x_filtRBDS'.*sin(2*pi*57000*t);
+
+RBDS_fase=resample(RBDS_fase,19,25);
+RBDS_cuadratura=resample(RBDS_cuadratura,19,25);
 
 % Obtenemos el filtro conformador convolucionando un pulso coseno
 % remonta<do con dos deltas en -Tsim/4 y Tsim/4
@@ -197,8 +199,69 @@ coseno_remontado = resample(coseno_remontado,128,length(coseno_remontado));
 deltas = zeros(1,128);
 deltas(3*length(deltas)/8)=-1;
 deltas(5*length(deltas)/8)=1;
-p = conv(deltas,coseno_remontado);
+p = [conv(deltas,coseno_remontado) 0];
 plot(p);
+
+% ahora tenenemos que filtrar la señal por el puso conformador
+
+x_RBDS_final=zeros(129,int64(length(RBDS_cuadratura-60)/128 -1));
+
+% for i=1:length(RBDS_cuadratura-60)/128 -1
+%     x_fase_RDS=filter(fliplr(p),1,RBDS_fase(128*i:128*i + 128));
+%     x_cuadratura_RDS=filter(fliplr(p),1,RBDS_cuadratura(128*i:128*i + 128));
+%     x_RBDS_final(:,i)=x_cuadratura_RDS+1i*x_fase_RDS;
+% end
+
+
+x_fase_RDS=filter(fliplr(p),1,RBDS_fase);
+x_cuadratura_RDS=filter(fliplr(p),1,RBDS_cuadratura);
+x_RBDS_final=x_fase_RDS + 1i*x_cuadratura_RDS;
+
+asdf=reshape(x_fase_RDS(1:end-224),256,[]);
+asdf2=reshape(x_cuadratura_RDS(1:end-224),256,[]);
+figure
+plot(asdf);
+figure
+plot(asdf2)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
