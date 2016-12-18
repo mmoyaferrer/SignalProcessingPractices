@@ -1,6 +1,8 @@
 clear all;
 close all;
 
+clc;
+
 Fs=200e3;
 
 load('Pract2.mat');
@@ -17,11 +19,11 @@ fftXq=fft(xq,Fs);
 
 
 % Demodulacion FM
-x_demod=angle(x(2:end).*conj(x(1:end-1)));   % Señal demodulada. La frec instant?nea es la derivada de la fase
+x_demod=angle(x(2:end).*conj(x(1:end-1)));   % Se?al demodulada. La frec instant?nea es la derivada de la fase
 figure;plot(t,x_demod);
 xlabel('Tiempo (s)');title('Senal FM demodulada MPX');
 
-% Espectro de la señal MPX
+% Espectro de la se?al MPX
 
 fftx = fft(x_demod);
 
@@ -54,20 +56,15 @@ DeemphasisFilter = design(h, 'iirlpnorm');
 
 
 
-
-% Filtro paso baja para obtener L+R
-
+%% Filtro paso baja para obtener L+R
 order_lowpass = 200;
 fcutoff = 15000/(Fs/2);  
 
 B_1 = fir1(order_lowpass,fcutoff);
- 
-%  Filter the signal with the FIR filter
 x_filtLR = filter(B_1, 1, x_demod);
 
 
-% Espectro de la señal L+R
-
+% Espectro de la se?al L+R
 fftxLR = fft(x_filtLR);
 fLR=linspace(0,Fs/2,length(x_filtLR)/2-1)/1000;
 figure;
@@ -76,7 +73,7 @@ xlabel('Frequency kHz');
 ylabel('L+R X(f)');
 title('L + R Part of Signal Spectrum');
 
-% Aplicamos filtro deemfasis
+%% Aplicamos filtro deemfasis
 
 x_LR = filter(DeemphasisFilter, x_filtLR);
 fftxLRDeemphasis = fft(x_LR);
@@ -88,40 +85,34 @@ xlabel('Frequency kHz');
 ylabel('Deemphasis L+R X(f)');
 title('Deemphasis L + R Part of Signal Spectrum');
 
-% soundsc(x_LR,Fs);
+%soundsc(x_LR,Fs);
 
-% Filtro paso banda para obtener Portadora
+%% Filtro paso banda para obtener Portadora
 
 order_bandpass = 200;
 f_bandpass =[16000 23000]*2/Fs ;  
 
 B_2 = fir1(order_bandpass,f_bandpass);
- 
-%  Filter the signal with the FIR filter
 carrier = filter(B_2, 1, x_demod);
 
-
-% Espectro de la señal portadora
+% Espectro de la se?al portadora
 
 fftx_carrier = fft(carrier);
-
 figure;
 plot(linspace(0,Fs/2,length(carrier)/2-1)/1000 , abs(fftx_carrier(1:length(fftx_carrier)/2-1)));
 xlabel('Frequency kHz');
 ylabel('Carrier X(f)');
 title('Carrier Part of Signal Spectrum');
 
-% Filtro paso banda para obtener L-R
+%% Filtro paso banda para obtener L-R
 
 order_bandpass2 = 200;
 f_bandpass2 =[23000 53000]*2/Fs;  
 
 B_3 = fir1(order_bandpass2,f_bandpass2);
- 
-%  Filter the signal with the FIR filter
 x_filtLminusR = filter(B_3, 1, x_demod);
 
-% Espectro de la señal  L-R
+% Espectro de la se?al  L-R
 
 fftx_LminusR = fft(x_filtLminusR);
 
@@ -131,12 +122,11 @@ xlabel('Frequency kHz');
 ylabel('L-R X(f)');
 title('L-R Part of Signal Spectrum');
 
-% Pasamos la señal L-R a banda base multiplicando por la portadora dos
-% veces
 
+%% Obtencion de los canales L y R
+
+% Pasamos la se?al L-R a banda base multiplicando por la portadora dos veces
 x_LminusRBaseBand = carrier.^2 .* x_filtLminusR;
- 
-%  Filter the signal with the FIR filter
 x_filtLminusRBaseBand = filter(B_1, 1, x_LminusRBaseBand);
 
 fftx_LminusRBaseBand = fft(x_filtLminusRBaseBand);
@@ -147,51 +137,22 @@ ylabel('L-R X(f)');
 title('L-R Part banda base of Signal Spectrum');
 
 
-% Aplicamos el filtro de deemfasis a la señal L-R en banda base 
-
+% Aplicamos el filtro de deemfasis a la se?al L-R en banda base 
 x_LminusRdeem = filter(DeemphasisFilter, x_filtLminusRBaseBand);
 
-% Obtenemos el canal R sumando las señales L+R y L-R
+% Obtenemos el canal R sumando las se?ales L+R y L-R
 
 R = x_LR + x_LminusRdeem;
 L = x_LR - x_LminusRdeem;
 x_RX = [ R';L'];
 
-% sound (x_RX,Fs);
+% soundsc(x_RX,Fs); % Audio final decodificado y dividido en L y R
 
 
-% Filtro paso banda para obtener RBDS
 
-order_bandpass3 = 200;
-f_bandpass3 =[55000 58650]*2/Fs;  
-f_bandpass3 =[54594 59406]*2/Fs;  % en internet --> BW=4812
+%% Obtencion y decodificacion RBDS
 
-B_4 = fir1(order_bandpass3,f_bandpass3);
- 
-%  Filter the signal with the FIR filter
-x_filtRBDS = filter(B_4, 1, x_demod);
-
-% Espectro de la señal RDS
-
-fftx_RBDS = fft(x_filtRBDS);
-
-figure;
-plot(linspace(0,Fs/2,length(x_filtRBDS)/2-1)/1000 , abs(fftx_RBDS(1:length(fftx_RBDS)/2-1)));
-xlabel('Frequency kHz');
-ylabel('RBDS X(f)');
-title('RBDS Part of Signal Spectrum');
-
-%% Decodificamos RBDS
-
-% Obtengo la señal en fase y cuadratura
-
-RBDS_fase=x_filtRBDS'.*cos(2*pi*57000*t);
-RBDS_cuadratura=x_filtRBDS'.*sin(2*pi*57000*t);
-
-RBDS_fase=resample(RBDS_fase,19,25);
-RBDS_cuadratura=resample(RBDS_cuadratura,19,25);
-
-% Obtenemos el filtro conformador convolucionando un pulso coseno
+% Primero, obtenemos el filtro conformador convolucionando un pulso coseno
 % remonta<do con dos deltas en -Tsim/4 y Tsim/4
 
 coseno_remontado = rcosine(4000,200000);
@@ -202,71 +163,46 @@ deltas(5*length(deltas)/8)=1;
 p = [conv(deltas,coseno_remontado) 0];
 plot(p);
 
-% ahora tenenemos que filtrar la señal por el puso conformador
+% En segundo lugar, procedemos a procesar RBDS
+
+% Filtro paso banda para obtener RBDS
+order_bandpass3 = 200;
+f_bandpass3 =[54594 59406]*2/Fs;  % en internet --> BW=4812
+B_4 = fir1(order_bandpass3,f_bandpass3);
+x_filtRBDS = filter(B_4, 1, x_demod);
+
+% Espectro de la se?al RDS
+
+fftx_RBDS = fft(x_filtRBDS);
+figure;
+plot(linspace(0,Fs/2,length(x_filtRBDS)/2-1)/1000 , abs(fftx_RBDS(1:length(fftx_RBDS)/2-1)));
+xlabel('Frequency kHz');
+ylabel('RBDS X(f)');
+title('RBDS Part of Signal Spectrum');
+
+% Decodificamos RBDS
+
+Tsimb=1/1187.5;
+
+RBDS_fase=x_filtRBDS'.*cos(2*pi*57000*t);
+RBDS_cuadratura=x_filtRBDS'.*sin(2*pi*57000*t);
+
+RBDS_fase=resample(RBDS_fase,19,25); % Hacemos resample para q salgan 256 bits por simbolo, un n? entero de muestras por simbolo
+RBDS_cuadratura=resample(RBDS_cuadratura,19,25);
+
+% Filtramos la se?al por el puso conformador
 
 x_RBDS_final=zeros(129,int64(length(RBDS_cuadratura-60)/128 -1));
-
-% for i=1:length(RBDS_cuadratura-60)/128 -1
-%     x_fase_RDS=filter(fliplr(p),1,RBDS_fase(128*i:128*i + 128));
-%     x_cuadratura_RDS=filter(fliplr(p),1,RBDS_cuadratura(128*i:128*i + 128));
-%     x_RBDS_final(:,i)=x_cuadratura_RDS+1i*x_fase_RDS;
-% end
-
 
 x_fase_RDS=filter(fliplr(p),1,RBDS_fase);
 x_cuadratura_RDS=filter(fliplr(p),1,RBDS_cuadratura);
 x_RBDS_final=x_fase_RDS + 1i*x_cuadratura_RDS;
 
-asdf=reshape(x_fase_RDS(1:end-224),256,[]);
-asdf2=reshape(x_cuadratura_RDS(1:end-224),256,[]);
+diagramaDeOjoFase=reshape(x_fase_RDS(1:end-224),256,[]);
+diagramaDeOjoCuadratura=reshape(x_cuadratura_RDS(1:end-224),256,[]);
 figure
-plot(asdf);
+plot(diagramaDeOjoFase);
 figure
-plot(asdf2)
+plot(diagramaDeOjoCuadratura)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-% filtrar paso baja
-
-
-% soundsc(abs(x),Fs);
-% plot(t,xi);
