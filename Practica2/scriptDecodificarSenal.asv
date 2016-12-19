@@ -204,12 +204,12 @@ plot(diagramaDeOjoFase);
 figure
 plot(diagramaDeOjoCuadratura)
 
-% Extraer bitstream - Por aquí nos hemos quedado  
-% Hay que decidir un símbolo cada 256 muestras => 2 bits cada 256 muestras.
+% Extraer bitstream - No
+
 bitstream=qamdemod(x_filtRBDS,2);
 figure;
 plot(bitstream,'o');
 title('BitStream sequence');
 xlabel('Time t');
-ylabel('Bit Value');
+ylabel('Valor de bit');
 
