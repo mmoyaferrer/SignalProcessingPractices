@@ -165,6 +165,9 @@ plot(p);
 % En segundo lugar, procedemos a procesar RBDS
 
 % Filtro paso banda para obtener RBDS
+% Primeo se tiene que filtrar paso banda la señal,centrada en 57Khz, con un
+% anche de banda de 4812Hz. En este caso utilizamos un filtro fir.
+
 order_bandpass3 = 2000;
 f_bandpass3 =[54594 59406]*2/Fs;  % en internet --> BW=4812
 B_4 = fir1(order_bandpass3,f_bandpass3);
@@ -172,7 +175,11 @@ x_filtRBDS = filter(B_4, 1, x_demod);
 
 % Espectro de la se?al RDS
 
+
 fftx_RBDS = fft(x_filtRBDS);
+
+% Ahora representamos la señal filtrada en la que vemos la señal centrada
+% en torno a 57Khz 
 
 figure;
 plot(linspace(0,Fs/2,length(x_filtRBDS)/2-1)/1000 , abs(fftx_RBDS(1:length(fftx_RBDS)/2-1)));
@@ -182,20 +189,31 @@ title('RBDS Part of Signal Spectrum');
 
 % Decodificamos RBDS
 
-Tsimb=1/1187.5;
+% Para demodular la señal se tiene que multiplicar la señal filtrada por el
+% seno y por el coseno de 57Khz, obteniendo de esta manera la señal en fase
+% y cuadratura.
 
 RBDS_fase=x_filtRBDS'.*cos(2*pi*57000*t);
 RBDS_cuadratura=x_filtRBDS'.*sin(2*pi*57000*t);
 
+% Para obtener un número entero de muestras por símbolo, se hace un
+% resample y cambiamos la frecuencia de muestreo a 152KHz.
+
 RBDS_fase=resample(RBDS_fase,19,25); % Hacemos resample para q salgan 256 bits por simbolo, un n? entero de muestras por simbolo
 RBDS_cuadratura=resample(RBDS_cuadratura,19,25);
 
-% Filtramos la se?al por el puso conformador
+Tsimb=1/1187.5; % Se define un nuevo tiempo de símbolo para la nueva Fs
 
+% Filtramos la se?al por el puso conformador, para convolucionar la señal
+% con el pulso conformador simplmenete filtrammos por el pulso invertido.
+% obteniendo la señal en fase y caudratura.
 
 x_fase_RDS=filter(fliplr(p),1,RBDS_fase);
 x_cuadratura_RDS=filter(fliplr(p),1,RBDS_cuadratura);
 x_RBDS_final=x_fase_RDS + 1i*x_cuadratura_RDS;
+
+% Hacemos el diagrama de ojo para ver cual es el instante de tiempo
+% adecuado para el muestreo, en este caso unas 48 muestras.
 
 diagramaDeOjoFase=reshape(x_fase_RDS(1:end-224),256,[]);
 diagramaDeOjoCuadratura=reshape(x_cuadratura_RDS(1:end-224),256,[]);
