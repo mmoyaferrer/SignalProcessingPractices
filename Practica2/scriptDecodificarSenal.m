@@ -1,29 +1,47 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%   Practica 2 SAC   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%                    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%          Autores:  Juan Manuel López Torralba
+%%%%%                    Jose Manuel García Jimeno
+%%%%%                    Manuel Moya Ferrer
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
 clear all;
 close all;
-
 clc;
 
-Fs=200e3;
+Fs=200e3;                       % Frecuencia de muestreo de señal en FM
 
+% Se carga la señal procedente del SDR y se pasa a un formato legible
 load('Pract2.mat');
 x=reshape(x.Data,numel(x.Data),1);
 
-t=1/Fs:1/Fs:(length(x)-1)/Fs;
+t=1/Fs:1/Fs:(length(x)-1)/Fs;   % Se define el vector de tiempos
 
-xi=real(x);
-xq=imag(x);
+xi=real(x);                     % Parte Real de la señal 
+xq=imag(x);                     % Parte Imaginaria de la señal
 
+% Se obtiene la FFT de las señales en fase y cuadratura
 fftXi=fft(xi,Fs);
 fftXq=fft(xq,Fs);
 
 
-% Demodulacion FM
-x_demod=angle(x(2:end).*conj(x(1:end-1)));   % Se?al demodulada. La frec instant?nea es la derivada de la fase
+%% Demodulacion FM
+% A continuación se procede a demodular la señal FM para, posteriormente,
+% obtener el espectro de la señal MPX (FM en banda base) y así, tras aplicar
+% los filtros correspondientes, ir obteniendo las señales L-R, L+R, etc.
+
+% Para demodular tenemos en cuenta que La frecuencia instantanea 
+% es la derivada de la fase
+x_demod=angle(x(2:end).*conj(x(1:end-1)));   % señal demodulada
 figure;plot(t,x_demod);
 xlabel('Tiempo (s)');title('Senal FM demodulada MPX');
 
-% Espectro de la se?al MPX
-
+% Espectro de la señal MPX
+% Aqui podemos ver toda la información contenida en la señal FM
 fftx = fft(x_demod);
 
 f=linspace(0,Fs/2,length(x_demod)/2-1)/1000;
@@ -35,6 +53,8 @@ title('Demoldulated Signal Spectrum');
 
 
 % Filtro Deemphasis
+% Aqui se define un filtro de énfasis, los valores son sacados de los
+% recursos disponibles en la red de redes.
 N= 5; % Orden
 B= 1; % Numero de bandas
 F1 = [50 100 500 1000 2000 3000 4000 5000 6000 7000 8000 9000 10000 ...
@@ -51,21 +71,22 @@ A1 = [1 0.998849369936505 0.973867785328633 0.904690437738119 ...
 
 h = fdesign.arbmag('N,B,F,A', N, B, F1, A1, Fs);
 filtrodeenfasis = design(h, 'iirlpnorm');
-%fvtool(DeemphasisFilter,'Color','White'); % Rojo: especificaciones. Azul: filtro dise?ado.
-
 
 
 %% Filtro paso baja para obtener L+R
+% Diseñamos el filtro, con orden 200 y la frecuencia de corte correcta
 order_lowpass = 200;
 fcutoff = 15000/(Fs/2);  
 
-B_1 = fir1(order_lowpass,fcutoff);
+B_1 = fir1(order_lowpass,fcutoff);  % Se opta por un filtro FIR paso baja
 x_filtLR = filter(B_1, 1, x_demod);
 
 
 % Espectro de la se?al L+R
 fftxLR = fft(x_filtLR);
 fLR=linspace(0,Fs/2,length(x_filtLR)/2-1)/1000;
+
+% Representación gráfica de la señal L+R en frecuencia
 figure;
 plot(fLR,abs(fftxLR(1:length(fftxLR)/2-1)));
 xlabel('Frequency kHz');
@@ -73,6 +94,8 @@ ylabel('L+R X(f)');
 title('L + R Part of Signal Spectrum');
 
 %% Aplicamos filtro deemfasis
+% Se aplica un filtro de énfasis a la señal L+R en frecuencia para 
+% atenuar el ruído y centrarnos en la señal de interés
 
 x_LR = filter(filtrodeenfasis, x_filtLR);
 fftxLRDeemphasis = fft(x_LR);
@@ -88,7 +111,7 @@ title('Deemphasis L + R Part of Signal Spectrum');
 
 %% Filtro paso banda para obtener Portadora. 
 %  Puesto que la se?al FM contiene una portadora implicita y posteriormente
-%  nos sera necesaria para pasar a banda base la se?al L-R, obtendremos
+%  nos será necesaria para pasar a banda base la se?al L-R, obtendremos
 %  dicha portadora de la se?al mediante un filtro paso banda y la
 %  guardaremos como "carrier".
 
