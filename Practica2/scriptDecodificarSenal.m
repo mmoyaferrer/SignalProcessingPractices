@@ -252,16 +252,37 @@ x_RBDS_final=x_fase_RDS + 1i*x_cuadratura_RDS;
 diagramaDeOjoFase=reshape(x_fase_RDS(1:end-224),256,[]);
 diagramaDeOjoCuadratura=reshape(x_cuadratura_RDS(1:end-224),256,[]);
 figure
-plot(diagramaDeOjoFase);
+% plot(diagramaDeOjoFase);
 figure
 plot(diagramaDeOjoCuadratura)
 
-% Extraer bitstream - Por aqu? nos hemos quedado  
-% Hay que decidir un s?mbolo cada 256 muestras => 2 bits cada 256 muestras.
-bitstream=qamdemod(x_filtRBDS,2);
+% Extraer bitstream 
+% Hay que decidir un s?mbolo cada 256 muestras, la modulación de estas
+% señal es DBPSK, es difencial para que un desplazamiento en fase no afecte
+% a la señal recibida haciendola más robusta.
+
+% Primero eliminamos las primeras 48 muestras para tomar el istante de
+% muestreo obtenido en el diagrama de ojo
+
+x_filtRBDS = x_filtRBDS(48:end);
+
+% Con downsample nos quedamos con el instante de muestreo bueno para la
+% extracción del símbolo.
+
+RBDS_muestreada = downsample(x_filtRBDS,256);
+
+% Con la función de matlab dpskdemod podemos obtener el bitsream a partir
+% de la señal RBDS extraida.
+
+
+bitstream=dpskdemod(RBDS_muestreada,2);
 figure;
 plot(bitstream,'o');
 title('BitStream sequence');
 xlabel('Time t');
 ylabel('Bit Value');
+
+% Decodificación del bitstream - Por aqu? nos hemos quedado  
+
+
 
