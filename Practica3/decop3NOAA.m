@@ -1,8 +1,17 @@
-%% Practica 3 SAC
+%% Practica 3 - SAC
+% Recepción Analógica empleando el estándard APT.
+%
+%  Autores -> Manuel Moya Ferrer
+%             Jose Manuel Garcia Gimenez
+%             Juan Manuel Lopez Torralba
 
+
+% Leemos el fichero de origen y cargamos los datos en la variable x
 fileID = fopen('data_full.raw','r');
 x = fread(fileID,inf,'single');
+fclose(fileID);
 
+Nfft = 1500000;
 FsAM = 11025;
 Fs = 60e3;
 FsFinal = 4160;
@@ -15,6 +24,7 @@ x_I = x(1:2:end);
 x_Q = x(2:2:end);
 
 x_FM = x_I + 1j*x_Q;
+
 
 % Demodulameos la señal FM
 
@@ -34,3 +44,9 @@ fftx = fft(x_demod_FM);
 f=linspace(0,Fs/2,length(x_demod_FM)/2-1)/1000;
 figure;
 plot(f,abs(fftx(1:length(fftx)/2-1)));
+
+
+
+
+
+
