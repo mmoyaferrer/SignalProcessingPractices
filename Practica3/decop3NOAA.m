@@ -53,10 +53,10 @@ end
 %% OPCION GOSELIANA
 
 a=[1 1 0 0];
-pulsoA=[zeros(1,4) a a a a a a a zeros(1,8)]; % pulso para el visible
+pulsoA=[-1*ones(1,4) a a a a a a a -1*ones(1,8)]; % pulso para el visible
 corr_PulsoA=xcorr(m,pulsoA);
 corr_PulsoA_shifted=circshift(corr_PulsoA,(length(corr_PulsoA)-1)/2 );
-[picos,posiciones_picos]=findpeaks(corr_PulsoA_shifted,'MINPEAKHEIGHT',13,'MINPEAKDISTANCE',1900);
+[picos,posiciones_picos]=findpeaks(corr_PulsoA_shifted,'MINPEAKHEIGHT',7,'MINPEAKDISTANCE',2000);      % con 7 y 8 salen bien comparar
 
 
 
@@ -74,7 +74,10 @@ title('Imagen goseliana')
 
 figure
 imshow(vectorImag2)
-
+title('No Doppler Effect')
+figure
+imshow(vectorImag)
+title('Fast (Easy) Implementation')
 
 
 
