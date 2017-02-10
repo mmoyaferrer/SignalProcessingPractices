@@ -2,12 +2,12 @@
 % Recepción Analógica empleando el estándard APT.
 %
 %  Autores -> Manuel Moya Ferrer
-%             Jose Manuel Garcia Gimeno
+%             Jose Manuel Garcia Giménez
 %             Juan Manuel Lopez Torralba
 
 clear all
 close all
-
+clc
 
 
 % Leemos el fichero de origen y cargamos los datos en la variable x
