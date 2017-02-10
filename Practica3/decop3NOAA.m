@@ -7,7 +7,7 @@
 
 clear all
 close all
-clc
+
 
 
 % Leemos el fichero de origen y cargamos los datos en la variable x
@@ -60,6 +60,11 @@ title('Senal mensaje demodulada')
 
 % Opción Sencilla (con efecto Doppler)
 
+% Para esto, hemos representado la señal demodulada y hemos buscado visualmente
+% los pulsos de sincronización, encontrado uno en la meustra 551097,
+% entonces vamos tomando desde ahí cada 2080 muestras para representar la
+% imagen sin ninguna clase de corrección.
+
 imageData=m(51097:1974058-1082);
 
 for i=0:1:900
@@ -69,6 +74,14 @@ end
 
 
 % Opción öptima (Sin efecto Doppler)
+
+% Para esta opción lo que hacemos es formar la señal del pulso de
+% sincronización a y hacer la correlación de la señal con dicho pulso.
+% Buscando los máximos en la señal de autocorrelación, encontramos los
+% pulsos de sincronización en la señal orginal. 
+% Enotnces en este caso se toman las 2080 palabras a partir de cada pulso
+% de sincronización a para representar cada línea mitigando el efecto
+% doppler.
 
 a=[1 1 0 0];
 pulsoA=[-1*ones(1,4) a a a a a a a -1*ones(1,8)]; % pulso para el visible
