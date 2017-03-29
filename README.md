@@ -1,5 +1,7 @@
 # Signal processing practices of M.Sc. in Telecommunication Engineering.
 
+Baseband transmission and reception using manchester code, FM receiver and NOAA APT picture transmission decoder
+
 # Authors
 
   Manuel Moya Ferrer
